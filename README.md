@@ -18,7 +18,7 @@ Create a production build with `npm run build`, or serve it locally with `npm ru
 3. Pass the phone. Each player enters a nickname, reveals only their own role, and confirms to hide it before the next handover.
 4. The narrator confirms they have the phone before opening the complete role distribution.
 
-The narrator guides the game through night actions, a saved night log, morning outcomes, village discussion, offline voting, role-triggered eliminations, death reactions, and faction victory checks. Village voting happens in person; the narrator records the chosen player and the reason for elimination on the phone.
+The narrator guides the game through night actions, a saved and filterable night log, morning outcomes, village discussion, offline voting, multiple role-triggered or vote-related eliminations in one day, death reactions, and faction victory checks. Village voting happens in person; the narrator records each eliminated player and the reason on the phone, then explicitly finishes the day. A Hunter killed at night is announced in the dawn log and gets a choice prompt when the narrator opens day.
 
 ## Architecture
 
@@ -29,7 +29,7 @@ The narrator guides the game through night actions, a saved night log, morning o
 - `src/hooks/useGame.ts`: recovery window and automatic persistence.
 - `src/screens/GameRoundScreen.tsx`: night actions, the event log, narrator-recorded day outcomes, and role reactions rendered as touch-friendly cards.
 - `src/screens/`: independent setup, distribution, and narrator screens.
-- Vite + Tailwind CSS + `vite-plugin-pwa`: client build, styles, install manifest, and offline asset caching.
+- Vite + Tailwind CSS + `vite-plugin-pwa`: client build, styles, install manifest, offline font assets, and offline app caching.
 
 ## Recovery and privacy
 

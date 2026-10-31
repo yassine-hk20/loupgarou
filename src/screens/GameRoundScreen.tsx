@@ -264,13 +264,22 @@ function DawnScreen({ game, onAction }: GameRoundScreenProps) {
 function NightLogPanel({ game }: { game: SavedGame }) {
   const { t } = useTranslation()
   const { t: roleT } = useTranslation('roles')
+  const [filter, setFilter] = useState<'all' | 'deaths' | 'actions' | 'clues'>('all')
   const logs = [...(game.progress?.nightLogs ?? [])].sort((first, second) => second.round - first.round)
   if (!logs.length) return null
+  const clueKinds = new Set(['seerSaw', 'bearGrowl', 'bearQuiet', 'monkeyInvestigated', 'alienCorrect', 'alienWrong'])
+  const deathKinds = new Set(['eliminated'])
+  const visibleEntries = (entries: typeof logs[number]['entries']) => entries.filter((entry) => {
+    if (filter === 'all') return true
+    if (filter === 'deaths') return deathKinds.has(entry.kind)
+    if (filter === 'clues') return clueKinds.has(entry.kind)
+    return !deathKinds.has(entry.kind) && !clueKinds.has(entry.kind)
+  })
   const renderLog = (round: number, entries: NonNullable<SavedGame['progress']>['nightLogs'][number]['entries']) => (
     <section className="night-log-round" key={round}>
       <h3>{t('game.round', { round })}</h3>
       <ol className="night-log-list">
-        {entries.map((entry, index) => {
+        {visibleEntries(entries).map((entry, index) => {
           const names = entry.playerIndices.map((playerIndex) => game.assignments[playerIndex]?.name || t('game.playerNumber', { number: playerIndex + 1 }))
           const role = entry.roleId === undefined ? '' : roleT(`${roleById.get(String(entry.roleId))?.key}.name`)
           const text = t(`game.log.${entry.kind}`, {
@@ -282,12 +291,16 @@ function NightLogPanel({ game }: { game: SavedGame }) {
           })
           return <li className="night-log-entry" key={`${entry.kind}-${index}`}><span className="log-marker" aria-hidden="true">{entry.kind === 'eliminated' ? '×' : '·'}</span><p>{text}</p></li>
         })}
+        {!visibleEntries(entries).length && <li className="night-log-empty">{t('game.noMatchingLogEntries')}</li>}
       </ol>
     </section>
   )
 
   return <section className="night-log-panel">
     <div className="night-log-heading"><span aria-hidden="true">☾</span><h2>{t('game.nightLog')}</h2></div>
+    <div className="night-log-filters" role="group" aria-label={t('game.filterLog')}>
+      {(['all', 'deaths', 'actions', 'clues'] as const).map((value) => <button type="button" className={filter === value ? 'is-active' : ''} aria-pressed={filter === value} key={value} onClick={() => setFilter(value)}>{t(`game.logFilter.${value}`)}</button>)}
+    </div>
     {renderLog(logs[0].round, logs[0].entries)}
     {logs.length > 1 && <details className="older-logs">
       <summary>{t('game.olderNightLogs', { count: logs.length - 1 })}</summary>
@@ -334,6 +347,7 @@ function DayScreen({ game, onAction }: GameRoundScreenProps) {
       : []
   })
   const judgeIndex = game.assignments.findIndex((assignment, index) => roleById.get(String(assignment.roleId))?.key === 'stutteringJudge' && progress.alive[index] && !progress.judgeUsed.includes(index))
+  const dayEliminations = progress.eliminations.filter((entry) => entry.round === progress.round && entry.cause !== 'night').length
   return (
     <main className="game-main">
       <div className="game-topline"><span>{t('game.round', { round: progress.round })}</span><span>{t('game.day')}</span></div>
@@ -344,6 +358,7 @@ function DayScreen({ game, onAction }: GameRoundScreenProps) {
       </section>
       {progress.ravenTarget !== null && progress.alive[progress.ravenTarget] && <p className="game-notice">{t('game.ravenVotesNotice', { name: game.assignments[progress.ravenTarget]?.name })}</p>}
       <PlayerRoster game={game} />
+      <p className="day-elimination-count">{t('game.eliminationsToday', { count: dayEliminations })}</p>
       {!progress.dayVoteResolved ? <>
         <section className="special-action-panel narrator-elimination-panel">
           <h2>{t('game.recordDayElimination')}</h2>
@@ -360,7 +375,7 @@ function DayScreen({ game, onAction }: GameRoundScreenProps) {
               if (eliminationTarget !== null) onAction({ type: 'NARRATOR_ELIMINATE', targetIndex: eliminationTarget, cause: eliminationCause })
               setEliminationTarget(null)
             }}>{t('game.confirmDayElimination')} <span aria-hidden="true">→</span></button>
-            <button type="button" className="button button-quiet" onClick={() => onAction({ type: 'NO_DAY_ELIMINATION' })}>{t('game.noDayElimination')}</button>
+            <button type="button" className="button button-quiet" onClick={() => onAction({ type: 'NO_DAY_ELIMINATION' })}>{t('game.finishDay')}</button>
           </div>
         </section>
         {barberIndex >= 0 && <section className="special-action-panel">

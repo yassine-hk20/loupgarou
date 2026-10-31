@@ -553,6 +553,9 @@
 .night-log-heading { display: flex; align-items: center; gap: 10px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
 .night-log-heading > span { color: #d7d7d2; font-size: 19px; }
 .night-log-heading h2 { margin: 0; color: var(--paper); font-family: Arial, sans-serif; font-size: 15px; font-weight: 500; }
+.night-log-filters { display: flex; flex-wrap: wrap; gap: 6px; padding-block: 12px 3px; }
+.night-log-filters button { min-height: 34px; padding: 6px 11px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-family: Arial, sans-serif; font-size: 12px; cursor: pointer; }
+.night-log-filters button.is-active { border-color: #b6b6b0; background: #e8e8e3; color: #10100f; }
 .night-log-round { padding-top: 13px; }
 .night-log-round h3 { margin: 0 0 7px; color: var(--dim); font-family: Arial, sans-serif; font-size: 12px; font-weight: 500; }
 .night-log-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
@@ -565,6 +568,7 @@
 .elimination-causes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
 .narrator-elimination-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 15px; }
 .narrator-elimination-actions .button-primary { min-width: 190px; }
+.day-elimination-count { margin: 18px 0 -18px; color: var(--muted); font-family: Arial, sans-serif; font-size: 14px; }
 .ability-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .ability-option { min-height: 42px; padding: 8px 12px; border: 1px solid var(--line); background: #10100f; color: var(--muted); font-family: Arial, sans-serif; font-size: 12px; cursor: pointer; }
 .ability-option.is-selected { border-color: var(--paper); color: var(--paper); background: #1b1b19; }
@@ -608,6 +612,7 @@
   .servant-actions { align-items: stretch; flex-direction: column; width: 100%; }
   .night-log-panel { padding: 14px; }
   .night-log-entry p { font-size: 14px; }
+  .night-log-filters button { min-height: 38px; padding-inline: 12px; }
   .narrator-elimination-actions { flex-direction: column; }
   .narrator-elimination-actions .button { width: 100%; }
 }
@@ -615,6 +620,6 @@
 @media (max-width: 360px) {
   .assignment-card-grid, .player-card-grid { gap: 6px; }
   .player-card, .roster-card { padding: 8px; }
-  .player-card-name { font-size: 13px; }
+  .player-card-name { font-size: 15px; }
   .role-chip { font-size: 11px; }
 }

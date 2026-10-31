@@ -66,6 +66,14 @@
     "publicVillager": "قروي بريء معروف للجميع",
     "nightReports": "تقارير الليل للراوي",
     "nightLog": "سجل أحداث الليل",
+    "filterLog": "تصفية سجل الليل",
+    "logFilter": {
+      "all": "الكل",
+      "deaths": "الوفيات",
+      "actions": "الإجراءات",
+      "clues": "المعلومات"
+    },
+    "noMatchingLogEntries": "لا توجد أحداث تطابق هذا التصفية.",
     "olderNightLogs": "الليالي السابقة ({{count}})",
     "playerNumber": "اللاعب {{number}}",
     "log": {
@@ -154,7 +162,9 @@
     "eliminationCause": "سبب الإقصاء",
     "chooseEliminatedPlayer": "من تم إقصاؤه؟",
     "confirmDayElimination": "تأكيد الإقصاء",
-    "noDayElimination": "لم يُقصَ أحد",
+    "noDayElimination": "إنهاء النهار",
+    "finishDay": "إنهاء النهار",
+    "eliminationsToday": "الإقصاءات المسجلة اليوم: {{count}}",
     "ravenVotesNotice": "اختار الغراب {{name}} لصوتين إضافيين اليوم.",
     "cause": {
       "vote": "تصويت القرية",
@@ -175,11 +185,11 @@
     "elimination": "الاختيار الأخير",
     "gameOver": "انتهت اللعبة",
     "reaction": {
-      "hunter": "اختر من يموت معك",
+      "hunter": "يختار الصياد شخصًا ليموت معه",
       "colossus": "اختر مستذئبًا ليموت معك"
     },
     "reactionHint": {
-      "hunter": "يختار الصياد لاعبًا واحدًا ليموت معه.",
+      "hunter": "أعلن الراوي للتو موت الصياد. مرّر إليه الهاتف ليختار لاعبًا واحدًا يموت معه.",
       "colossus": "عرف العملاق هويات المستذئبين. اختر واحدًا منهم."
     },
     "winner": {

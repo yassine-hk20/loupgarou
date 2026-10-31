@@ -440,18 +440,21 @@ export function transitionGame(game: SavedGame | null, action: GameAction): Game
     case 'BEGIN_DAY': {
       const progress = game.progress
       if (game.stage !== 'GAME_STARTED' || progress?.phase !== 'morning') return reject(game, 'invalidTransition')
+      if (progress.pendingReactions.length > 0) {
+        return withActivity(game, { progress: { ...progress, phase: 'death-reaction', afterReaction: 'day' } })
+      }
       const next = checkWinner(game, { ...progress, phase: 'day' })
       return withActivity(game, { progress: next })
     }
     case 'NARRATOR_ELIMINATE': {
       const progress = game.progress
       const target = action.targetIndex
-      if (game.stage !== 'GAME_STARTED' || progress?.phase !== 'day' || progress.dayVoteResolved || !progress.alive[target]) return reject(game, 'invalidTransition')
+      if (game.stage !== 'GAME_STARTED' || progress?.phase !== 'day' || progress.dayVoteResolved || !Number.isInteger(target) || !progress.alive[target]) return reject(game, 'invalidTransition')
       if (action.cause === 'vote' && roleKey(game, target) === 'angel' && !progress.firstVillageVoteResolved) {
         return withActivity(game, { progress: { ...progress, firstVillageVoteResolved: true, dayVoteResolved: true, winner: 'angel', phase: 'game-over' } })
       }
       if (action.cause === 'vote' && roleKey(game, target) === 'villageIdiot') {
-        return withActivity(game, { progress: { ...progress, lostVotes: [...new Set([...progress.lostVotes, target])], firstVillageVoteResolved: true, dayVoteResolved: true, voteTarget: target } })
+        return withActivity(game, { progress: { ...progress, lostVotes: [...new Set([...progress.lostVotes, target])], firstVillageVoteResolved: true, voteTarget: target } })
       }
       const servantIndex = action.cause === 'vote'
         ? game.assignments.findIndex((assignment, index) => roleById.get(String(assignment.roleId))?.key === 'devotedServant' && progress.alive[index] && !used(progress, index, 'servant'))
@@ -464,7 +467,7 @@ export function transitionGame(game: SavedGame | null, action: GameAction): Game
         ...progress,
         villagePowersDisabled,
         firstVillageVoteResolved: progress.firstVillageVoteResolved || action.cause === 'vote',
-        dayVoteResolved: true,
+        dayVoteResolved: false,
         voteTarget: target,
       }, [target], action.cause, 'day')
       return withActivity(game, { progress: applied.progress })
@@ -535,7 +538,7 @@ export function transitionGame(game: SavedGame | null, action: GameAction): Game
         servantTargetIndex: null,
         pendingEliminationCause: null,
         firstVillageVoteResolved: true,
-        dayVoteResolved: true,
+        dayVoteResolved: false,
       }, [target], eliminationCause, 'day')
       return withActivity(game, { assignments, progress: applied.progress })
     }
@@ -670,7 +673,7 @@ function startDeathResolution(
     eliminations,
     pendingReactions: pending,
     afterReaction,
-    phase: pending.length ? 'death-reaction' : afterReaction,
+    phase: pending.length && cause !== 'night' ? 'death-reaction' : afterReaction,
   }
   if (!pending.length) next = checkWinner(game, next)
   return { progress: next, deaths }

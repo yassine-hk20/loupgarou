@@ -2,6 +2,8 @@
 
 :root {
   font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
   color: #f4f4f1;
   background: #090909;
   font-synthesis: none;
@@ -19,3 +21,31 @@ button { color: inherit; }
 button:focus-visible, input:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 ::selection { color: #080808; background: #f4f4f1; }
 #root { min-height: 100vh; }
+
+.home-title-wrap h1,
+.flow-main h1,
+.private-stage h1,
+.reveal-stage h1,
+.game-main h1,
+.vote-pass-stage h1,
+.ballot-main h1,
+.game-over-main h1 {
+  font-family: "Cinzel", Georgia, serif;
+}
+
+html:lang(ar) body,
+html:lang(ar) button,
+html:lang(ar) input,
+html:lang(ar) select,
+html:lang(ar) .home-title-wrap h1,
+html:lang(ar) .flow-main h1,
+html:lang(ar) .private-stage h1,
+html:lang(ar) .reveal-stage h1,
+html:lang(ar) .game-main h1,
+html:lang(ar) .game-over-main h1 {
+  font-family: "Noto Sans Arabic", sans-serif;
+}
+
+html:lang(ar) .app-shell :where(*) {
+  font-family: "Noto Sans Arabic", sans-serif;
+}

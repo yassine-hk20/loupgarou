@@ -66,6 +66,14 @@
     "publicVillager": "Publicly known innocent",
     "nightReports": "Night reports for the narrator",
     "nightLog": "Night log",
+    "filterLog": "Filter night log",
+    "logFilter": {
+      "all": "All",
+      "deaths": "Deaths",
+      "actions": "Actions",
+      "clues": "Clues"
+    },
+    "noMatchingLogEntries": "No events match this filter.",
     "olderNightLogs": "Earlier nights ({{count}})",
     "playerNumber": "Player {{number}}",
     "log": {
@@ -154,7 +162,9 @@
     "eliminationCause": "Reason for elimination",
     "chooseEliminatedPlayer": "Who was eliminated?",
     "confirmDayElimination": "Confirm elimination",
-    "noDayElimination": "No one was eliminated",
+    "noDayElimination": "Finish day",
+    "finishDay": "Finish day",
+    "eliminationsToday": "Eliminations recorded today: {{count}}",
     "ravenVotesNotice": "The Raven marked {{name}} for two additional votes today.",
     "cause": {
       "vote": "Village vote",
@@ -175,11 +185,11 @@
     "elimination": "Last choice",
     "gameOver": "Game over",
     "reaction": {
-      "hunter": "Choose someone to take with you",
+      "hunter": "The Hunter chooses someone to take with them",
       "colossus": "Choose a Werewolf to take with you"
     },
     "reactionHint": {
-      "hunter": "The Hunter chooses one player to die with them.",
+      "hunter": "The Hunter has just been announced dead. Hand them the phone now so they can choose one player to die with them.",
       "colossus": "The Colossus has learned who the Werewolves are. Choose one of them."
     },
     "winner": {
